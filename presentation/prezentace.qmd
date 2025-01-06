@@ -8,22 +8,22 @@ format:
     chalkboard: true
     transition: fade
     theme: simple
-    code-overflow: wrap
- 
+    code-block-height: 500px
 ---
 
 
 ## Introduction and Goals 🎯 {.smaller}
 
-- Creating a comprehensive YouTube video analysis tool 🎥
+- Creating a YouTube video analysis tool 🎥
 - Extracting and analyzing video metadata and transcripts 📝
 - Performing sentiment and topic analysis on comments 💭
-- Generating structured console output 📊
 - Building threaded comment analysis with reply detection 🔄
+- Generating structured console output 📊
+
 
 ## Processing Pipeline 🔄 {.smaller}
 
-![](pipeline.svg){}
+![](pipeline.svg){width="170mm"}
 
 
 ## Natural Language Processing 🧠 {.smaller}
@@ -61,14 +61,14 @@ format:
 - Enthusiastic 🤩 (0.92) and Praise 👏 (0.85)
 ::::
 
-## Zero-shot Classification Example
+## Zero-shot Classification Example 💡
 ```{python}
 #| echo: true
 #!pip install transformers[sentencepiece]
 from transformers import pipeline
-text = "Angela Merkel is a politician in Germany and leader of the CDU"
+text = "Three girls - Alice, Beth, and Carol - are solving a riddle. Alice sits to the left of the person wearing blue. Beth is not wearing red. The person on the right is wearing green. Can you determine what color each girl is wearing?"
 hypothesis_template = "This example is about {}"
-classes_verbalized = ["politics", "economy", "entertainment", "environment"]
+classes_verbalized = ["logic puzzle", "mathematics", "storytelling", "fashion"]
 zeroshot_classifier = pipeline("zero-shot-classification", model="MoritzLaurer/deberta-v3-base-zeroshot-v1.1-all-33")
 output = zeroshot_classifier(text, classes_verbalized, hypothesis_template=hypothesis_template, multi_label=False)
 print(output)
@@ -76,8 +76,10 @@ print(output)
 
 
 
-## Llama Prompt Example
-```python
+## Llama Prompt Example 🤖
+```{python}
+#| echo: true
+#| output-location: slide
 import requests
 
 def analyze_comment_relevance(comment, video_summary):
@@ -90,7 +92,7 @@ Analyze the relevance of this comment:
 "{comment}"
 
 On a scale from 0.0 to 1.0, how relevant is this comment to the video's content? 
-Explain your rating briefly in six words and then provide just the numerical score.
+Explain your rating briefly in three short sentences and then provide just the numerical score. Do not score harshly.
 
 
 Explanation and Score:"""
@@ -123,7 +125,7 @@ The video explains the latest developments in quantum computing technology.
 # Example comments to analyze
 comments = [
     "Nice video! Please do more tutorials!",
-    "The explanation of decoherence reduction was brilliant, especially the part about environmental isolation techniques!"
+    "The explanation of decoherence reduction was brilliant, especially the part about environmental isolation techniques!",
     "The graphics in this video are amazing, but I wish you talked more about error correction."
 ]
 
@@ -135,73 +137,11 @@ for comment in comments:
     print(result)
 ```
 
-##
 
-```{python}
-#| echo: false
-import requests
-
-def analyze_comment_relevance(comment, video_summary):
-    # Create the prompt template for relevance analysis
-    prompt = f"""Based on this video summary:
-    
-{video_summary}
-
-Analyze the relevance of this comment:
-"{comment}"
-
-On a scale from 0.0 to 1.0, how relevant is this comment to the video's content? 
-Explain your rating briefly in tow sentences and then provide just the numerical
-score
-
-Explanation and Score:"""
-
-    # Call Ollama API
-    response = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "llama3",
-            "prompt": prompt,
-            "stream": False
-        }
-    )
-    return response.json()["response"]
-
-# Example usage
-video_summary = """📌 SUMMARY
-The video explains the latest developments in quantum computing technology.
-
-🎯 MAIN TOPIC & CONTEXT
-- Primary focus on quantum bits and quantum gates
-- Aimed at technical audience with physics background
-- Demonstrates recent breakthroughs in qubit stability
-
-🔑 KEY POINTS
-- New method for reducing decoherence
-- Improved error correction techniques
-- Scalable architecture for quantum processors"""
-
-# Example comments to analyze
-comments = [
-    "Nice video! Please do more tutorials!",
-    "The graphics in this video are amazing, but I wish you talked more about error correction.",
-    "The explanation of decoherence reduction was brilliant, especially the part about environmental isolation techniques!"
-]
-
-# Analyze each comment
-for comment in comments:
-    print("\nAnalyzing comment:", comment)
-    print("-" * 50)
-    result = analyze_comment_relevance(comment, video_summary)
-    print(result)
-```
-
-## Demo
+## Demo 🎬
 
 ![](demo.mp4){}
 
-## Questions? ❓
+## Questions ❓
 
 Thank you for your attention! 👀
-
-Feel free to ask any questions about the implementation details.
