@@ -3,8 +3,7 @@
 Command-line tool for analyzing YouTube videos using Llama 3. Features include video metadata extraction, transcript analysis, sentiment analysis of comments, and relevance scoring.
 
 ## Demo
-https://github.com/cherrytw/NI-HCM-YouTube-Analysis-Tool/
-![](https://github.com/cherrytw/NI-HCM-YouTube-Analysis-Tool/presentation/demo.gif)
+![](https://github.com/cherrytw/NI-HCM-YouTube-Analysis-Tool/blob/main/presentation/demo.gif)
 
 ## Prerequisites
 
